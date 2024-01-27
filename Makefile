@@ -12,6 +12,9 @@ local:
 	mkdir -p bin
 no-test:
 	mvn clean install -DskipTests
+coverage:
+	mvn clean install -DskipTests; \
+	mvn test jacoco:prepare-agent package jacoco:report
 upgrade-system:
 	sudo apt upgrade
 	sudo apt update
