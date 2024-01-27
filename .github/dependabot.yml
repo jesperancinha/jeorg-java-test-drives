@@ -4,10 +4,4 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-name: "jakarta.servlet:jakarta.servlet-api"
-        versions: ["6.0.0"]
-  - package-ecosystem: "gradle"
-    directory: "/the-validation-company"
-    schedule:
-      interval: "daily"
+
