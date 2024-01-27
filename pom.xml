@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit-bom.version>5.10.1</junit-bom.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+        <omni-coveragereporter-maven-plugin.version>0.4.3</omni-coveragereporter-maven-plugin.version>
     </properties>
 
 
@@ -53,6 +54,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jesperancinha.plugins</groupId>
+                    <artifactId>omni-coveragereporter-maven-plugin</artifactId>
+                    <version>${omni-coveragereporter-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
