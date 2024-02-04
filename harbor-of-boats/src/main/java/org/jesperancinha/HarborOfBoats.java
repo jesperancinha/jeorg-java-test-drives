@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 import static java.lang.System.out;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class Main {
+public class HarborOfBoats {
     public static void main(String[] args) throws InterruptedException {
         ExecutorService service = null;
         out.println("--------------------------------------------");
