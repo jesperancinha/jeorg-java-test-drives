@@ -16,7 +16,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit-bom.version>5.10.1</junit-bom.version>
+        <junit-bom.version>5.10.2</junit-bom.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <omni-coveragereporter-maven-plugin.version>0.4.3</omni-coveragereporter-maven-plugin.version>
         <pdfbox.version>3.0.1</pdfbox.version>
