@@ -24,6 +24,13 @@ class SecretDocumentTest {
                 SecretDocument.readAndCopySecretFile(file)
         );
     }
+    @Test
+    void readAndCopySecretFileRaw() {
+        var file = Objects.requireNonNull(this.getClass().getResource(TEST_SECRET_PDF)).getFile();
+        assertThrowsExactly(InvalidPasswordException.class, () ->
+                SecretDocument.readAndCopySecretFileRaw(file)
+        );
+    }
 
     @Test
     void createSecretFile() throws IOException {

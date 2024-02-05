@@ -6,6 +6,8 @@ import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,10 +21,19 @@ public class SecretDocument {
     public static void main(String[] args) throws IOException {
         currentDirectoryInfo();
         createSecretFile(SOURCE_DOCUMENT_TEST_PDF);
-        readAndCopySecretFile(getSecretName(SOURCE_DOCUMENT_TEST_PDF));
+        try {
+            readAndCopySecretFileRaw(getSecretName(SOURCE_DOCUMENT_TEST_PDF));
+        } catch (RuntimeException | IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            readAndCopySecretFile(getSecretName(SOURCE_DOCUMENT_TEST_PDF));
+        } catch (RuntimeException | IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    private static String getSecretName(String name) {
+    public static String getSecretName(String name) {
         return getNameWithPrefix(name, "secret");
     }
 
@@ -44,18 +55,31 @@ public class SecretDocument {
 
     public static void readAndCopySecretFile(String secretDocumentRead) throws IOException {
         var secretReadName = getSecretReadName(secretDocumentRead);
-        if(new File(secretReadName).delete()){
-            out.printf("File %s has been deleted! %n",secretReadName);
+        if (new File(secretReadName).delete()) {
+            out.printf("File %s has been deleted! %n", secretReadName);
         }
         var pdDocument = Loader.loadPDF(new File(secretDocumentRead));
         pdDocument.save(new File(secretReadName));
         pdDocument.close();
     }
 
+
+    public static void readAndCopySecretFileRaw(String secretDocumentRead) throws IOException {
+        var secretReadName = getSecretReadName(secretDocumentRead);
+        if (new File(secretReadName).delete()) {
+            out.printf("File %s has been deleted! %n", secretReadName);
+        }
+        try (var pdDocument = Loader.loadPDF(Files.readAllBytes(Path.of(secretDocumentRead)))) {
+            pdDocument.save(new File(secretReadName));
+        }
+
+    }
+
     public static File createSecretFile(String inputPdf) throws IOException {
+
         var secretName = getSecretName(inputPdf);
-        if(new File(secretName).delete()){
-            out.printf("File %s has been deleted! %n",secretName);
+        if (new File(secretName).delete()) {
+            out.printf("File %s has been deleted! %n", secretName);
         }
         var pdDocument = Loader.loadPDF(new File(inputPdf));
         var accessPermission = new AccessPermission();
