@@ -54,7 +54,7 @@ public class SecretDocument {
     }
 
     public static void readAndCopySecretFile(String secretDocumentRead) throws IOException {
-        var secretReadName = getSecretReadName(secretDocumentRead);
+        final var secretReadName = getSecretReadName(secretDocumentRead);
         if (new File(secretReadName).delete()) {
             out.printf("File %s has been deleted! %n", secretReadName);
         }
@@ -65,11 +65,11 @@ public class SecretDocument {
 
 
     public static void readAndCopySecretFileRaw(String secretDocumentRead) throws IOException {
-        var secretReadName = getSecretReadName(secretDocumentRead);
+        final var secretReadName = getSecretReadName(secretDocumentRead);
         if (new File(secretReadName).delete()) {
             out.printf("File %s has been deleted! %n", secretReadName);
         }
-        try (var pdDocument = Loader.loadPDF(Files.readAllBytes(Path.of(secretDocumentRead)))) {
+        try (final var pdDocument = Loader.loadPDF(Files.readAllBytes(Path.of(secretDocumentRead)))) {
             pdDocument.save(new File(secretReadName));
         }
 
@@ -77,20 +77,20 @@ public class SecretDocument {
 
     public static File createSecretFile(String inputPdf) throws IOException {
 
-        var secretName = getSecretName(inputPdf);
+        final var secretName = getSecretName(inputPdf);
         if (new File(secretName).delete()) {
             out.printf("File %s has been deleted! %n", secretName);
         }
-        var pdDocument = Loader.loadPDF(new File(inputPdf));
-        var accessPermission = new AccessPermission();
+        final var pdDocument = Loader.loadPDF(new File(inputPdf));
+        final var accessPermission = new AccessPermission();
         accessPermission.setCanModify(false);
         accessPermission.setCanPrint(false);
         accessPermission.setCanExtractContent(false);
         accessPermission.setReadOnly();
-        var standardProtectionPolicy = new StandardProtectionPolicy("owner", "user", accessPermission);
+        final var standardProtectionPolicy = new StandardProtectionPolicy("owner", "user", accessPermission);
         standardProtectionPolicy.setEncryptionKeyLength(128);
         pdDocument.protect(standardProtectionPolicy);
-        var file = new File(secretName);
+        final var file = new File(secretName);
         pdDocument.save(file);
         pdDocument.close();
         return file;
