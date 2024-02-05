@@ -71,6 +71,9 @@ class SecretDocumentTest {
         }
         final var newBytes = Files.readAllBytes(Path.of(TEST_COPY_PDF));
         assertEquals(bytes.length, newBytes.length);
+        assertThrowsExactly(InvalidPasswordException.class, () ->
+                SecretDocument.readAndCopySecretFileRaw(TEST_COPY_PDF)
+        );
         copyFile.deleteOnExit();
     }
 }
