@@ -1,3 +1,4 @@
 protected.pdf
 protected-read.pdf
 test-secret.pdf
+!src/test/resources/*

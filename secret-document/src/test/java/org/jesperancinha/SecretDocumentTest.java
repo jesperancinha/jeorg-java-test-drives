@@ -51,7 +51,7 @@ class SecretDocumentTest {
     @Test
     void readInputStream() throws IOException {
         final var file = Objects.requireNonNull(this.getClass().getResource(TEST_SECRET_PDF)).getFile();
-        String value = new String(Files.readAllBytes(Path.of(file)), StandardCharsets.UTF_8);
+        final var value = new String(Files.readAllBytes(Path.of(file)), StandardCharsets.UTF_8);
         System.out.println(value);
         assertFalse(value.contains("This is a test"));
     }
