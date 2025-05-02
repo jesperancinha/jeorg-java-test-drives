@@ -19,7 +19,7 @@
         <junit-bom.version>5.12.2</junit-bom.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <omni-coveragereporter-maven-plugin.version>0.4.4</omni-coveragereporter-maven-plugin.version>
-        <pdfbox.version>3.0.4</pdfbox.version>
+        <pdfbox.version>3.0.5</pdfbox.version>
     </properties>
 
 
