@@ -28,3 +28,6 @@ replay_pid*
 *.iml
 target
 build
+
+# Automation
+dependabot.yml.bak
