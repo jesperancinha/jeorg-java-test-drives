@@ -1,7 +1,5 @@
 package org.jesperancinha;
 
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.System.out;
@@ -9,29 +7,24 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class HarborOfBoats {
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService service = null;
-        out.println("--------------------------------------------");
-        out.println("--- Starting first test with a multiple of 5");
-        out.println("--------------------------------------------");
-        try {
-            service = Executors.newCachedThreadPool();
+        try (var service = Executors.newCachedThreadPool()) {
+            out.println("--------------------------------------------");
+            out.println("--- Starting first test with a multiple of 5");
+            out.println("--------------------------------------------");
             Ship.performSweepTask(service, 10);
-        } finally {
-            Objects.requireNonNull(service).shutdown();
+            service.shutdown();
+            var terminated = service.awaitTermination(1, SECONDS);
+            assert terminated;
         }
-        var terminated = service.awaitTermination(1, SECONDS);
-        assert terminated;
-        out.println("--------------------------------------------");
-        out.println("--- Starting first test with a non multiple of 5");
-        out.println("--------------------------------------------");
-        try {
-            service = Executors.newCachedThreadPool();
+        try (var service = Executors.newCachedThreadPool()) {
+            out.println("--------------------------------------------");
+            out.println("--- Starting first test with a non multiple of 5");
+            out.println("--------------------------------------------");
             Ship.performSweepTask(service, 16);
-        } finally {
-            Objects.requireNonNull(service).shutdown();
+            service.shutdown();
+            service.shutdownNow();
+            var terminated = service.awaitTermination(1, SECONDS);
+            assert terminated;
         }
-        service.shutdownNow();
-        terminated = service.awaitTermination(1, SECONDS);
-        assert terminated;
     }
 }

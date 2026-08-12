@@ -2,6 +2,8 @@ package org.jesperancinha;
 
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +15,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Execution(ExecutionMode.SAME_THREAD)
 class SecretDocumentTest {
 
     public static final String TEST_SECRET_PDF = "/test-secret.pdf";

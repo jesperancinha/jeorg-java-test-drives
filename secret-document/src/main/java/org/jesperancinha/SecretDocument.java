@@ -55,44 +55,36 @@ public class SecretDocument {
 
     public static void readAndCopySecretFile(String secretDocumentRead) throws IOException {
         final var secretReadName = getSecretReadName(secretDocumentRead);
-        if (new File(secretReadName).delete()) {
-            out.printf("File %s has been deleted! %n", secretReadName);
+        Files.deleteIfExists(Path.of(secretReadName));
+        try (var pdDocument = Loader.loadPDF(new File(secretDocumentRead))) {
+            pdDocument.save(new File(secretReadName));
         }
-        var pdDocument = Loader.loadPDF(new File(secretDocumentRead));
-        pdDocument.save(new File(secretReadName));
-        pdDocument.close();
     }
 
 
     public static void readAndCopySecretFileRaw(String secretDocumentRead) throws IOException {
         final var secretReadName = getSecretReadName(secretDocumentRead);
-        if (new File(secretReadName).delete()) {
-            out.printf("File %s has been deleted! %n", secretReadName);
-        }
+        Files.deleteIfExists(Path.of(secretReadName));
         try (final var pdDocument = Loader.loadPDF(Files.readAllBytes(Path.of(secretDocumentRead)))) {
             pdDocument.save(new File(secretReadName));
         }
-
     }
 
     public static File createSecretFile(String inputPdf) throws IOException {
-
         final var secretName = getSecretName(inputPdf);
-        if (new File(secretName).delete()) {
-            out.printf("File %s has been deleted! %n", secretName);
+        Files.deleteIfExists(Path.of(secretName));
+        try (final var pdDocument = Loader.loadPDF(new File(inputPdf))) {
+            final var accessPermission = new AccessPermission();
+            accessPermission.setCanModify(false);
+            accessPermission.setCanPrint(false);
+            accessPermission.setCanExtractContent(false);
+            accessPermission.setReadOnly();
+            final var standardProtectionPolicy = new StandardProtectionPolicy("owner", "user", accessPermission);
+            standardProtectionPolicy.setEncryptionKeyLength(128);
+            pdDocument.protect(standardProtectionPolicy);
+            final var file = new File(secretName);
+            pdDocument.save(file);
+            return file;
         }
-        final var pdDocument = Loader.loadPDF(new File(inputPdf));
-        final var accessPermission = new AccessPermission();
-        accessPermission.setCanModify(false);
-        accessPermission.setCanPrint(false);
-        accessPermission.setCanExtractContent(false);
-        accessPermission.setReadOnly();
-        final var standardProtectionPolicy = new StandardProtectionPolicy("owner", "user", accessPermission);
-        standardProtectionPolicy.setEncryptionKeyLength(128);
-        pdDocument.protect(standardProtectionPolicy);
-        final var file = new File(secretName);
-        pdDocument.save(file);
-        pdDocument.close();
-        return file;
     }
 }
